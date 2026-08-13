@@ -1,0 +1,379 @@
+openapi: 3.0.3
+info:
+  title: Gym Training API
+  description: API REST para gerenciamento de treinos com geração de fichas via Gemini.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+        - age
+        - weight
+        - height
+        - objective
+        - experienceLevel
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        age:
+          type: integer
+        weight:
+          type: number
+        height:
+          type: number
+        objective:
+          type: string
+          example: hipertrofia
+        experienceLevel:
+          type: string
+          example: iniciante
+        restrictions:
+          type: string
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserProfile'
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        age:
+          type: integer
+        weight:
+          type: number
+        height:
+          type: number
+        objective:
+          type: string
+        experienceLevel:
+          type: string
+        restrictions:
+          type: string
+        hasWorkout:
+          type: boolean
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    WorkoutPlan:
+      type: object
+      properties:
+        currentWorkout:
+          type: object
+          properties:
+            plan:
+              type: object
+              properties:
+                objective:
+                  type: string
+                durationWeeks:
+                  type: integer
+                split:
+                  type: string
+                recommendations:
+                  type: string
+                exercises:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      muscleGroup:
+                        type: string
+                      sets:
+                        type: integer
+                      reps:
+                        type: integer
+                      weightRange:
+                        type: string
+                      frequencyPerWeek:
+                        type: string
+                      notes:
+                        type: string
+            generatedAt:
+              type: string
+    CompletedExerciseRequest:
+      type: object
+      required:
+        - exerciseName
+        - date
+        - sets
+        - reps
+      properties:
+        exerciseName:
+          type: string
+        date:
+          type: string
+          format: date-time
+        sets:
+          type: integer
+        reps:
+          type: integer
+        weight:
+          type: number
+        notes:
+          type: string
+    EvolutionResponse:
+      type: object
+      properties:
+        summary:
+          type: object
+          properties:
+            plannedExercises:
+              type: integer
+            exercisesPerformed:
+              type: integer
+            completionRate:
+              type: string
+            lastWorkoutGeneratedAt:
+              type: string
+        exerciseDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              plannedSets:
+                type: integer
+              plannedReps:
+                type: integer
+              completedSessions:
+                type: integer
+              averageWeight:
+                type: number
+              lastCompletion:
+                type: string
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+paths:
+  /auth/register:
+    post:
+      summary: Registro de aluno
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Aluno registrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Email já registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/login:
+    post:
+      summary: Login de aluno
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login bem-sucedido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Credenciais inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /profile:
+    get:
+      summary: Consulta os dados do aluno logado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Perfil do aluno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Atualização do perfil do aluno
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Campos de perfil para atualizar.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                age:
+                  type: integer
+                weight:
+                  type: number
+                height:
+                  type: number
+                objective:
+                  type: string
+                experienceLevel:
+                  type: string
+                restrictions:
+                  type: string
+      responses:
+        '200':
+          description: Perfil atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /workout/current:
+    get:
+      summary: Consulta o treino atual e gera/renova conforme necessário
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Treino atual do aluno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutPlan'
+        '401':
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '502':
+          description: Erro ao gerar o treino com Gemini
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /workout/completed:
+    post:
+      summary: Registra um exercício realizado
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletedExerciseRequest'
+      responses:
+        '201':
+          description: Exercício registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletedExerciseRequest'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /workout/evolution:
+    get:
+      summary: Consulta a evolução do aluno com base no treino vigente
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Evolução do aluno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvolutionResponse'
+        '401':
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Treino vigente não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'

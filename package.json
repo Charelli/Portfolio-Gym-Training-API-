@@ -1,0 +1,44 @@
+{
+  "name": "portfolio-gym-training-api",
+  "version": "1.0.0",
+  "description": "API REST para gerenciamento de treinos com geração de treinos personalizados via Gemini.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "node-fetch": "^2.6.12",
+    "swagger-ui-express": "^4.6.3",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^11.8.0",
+    "nodemon": "^3.0.1",
+    "sinon": "^22.1.0",
+    "supertest": "^7.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Charelli/Portfolio-Gym-Training-API-.git"
+  },
+  "keywords": [
+    "api",
+    "gym",
+    "workout",
+    "gemini",
+    "swagger",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Charelli/Portfolio-Gym-Training-API-/issues"
+  },
+  "homepage": "https://github.com/Charelli/Portfolio-Gym-Training-API-#readme"
+}
