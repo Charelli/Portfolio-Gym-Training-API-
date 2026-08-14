@@ -73,7 +73,7 @@ http://localhost:3000/api-docs
 
 ## Testes
 
-O projeto conta com três frentes de teste, documentadas em detalhe na [Wiki do projeto](../../wiki):
+O projeto conta com três frentes de teste, documentadas em detalhe na [Wiki do projeto](https://github.com/Charelli/Portfolio-Gym-Training-API-/wiki):
 
 - **Casos de teste manuais (Gherkin/BDD)** em `test_manual/`, cobrindo cenários de sucesso e falha de cada endpoint
 - **Testes automatizados** em `test_automatizados/`, usando Mocha + Chai + Supertest, cobrindo os fluxos críticos (autenticação e geração de treino via IA)
@@ -84,7 +84,7 @@ Para rodar os testes automatizados:
 npm test
 ```
 
-Consulte as páginas [Estratégia de Testes](../../wiki/Estrategia-de-Testes) e [Decisões Técnicas](../../wiki/Decisoes-Tecnicas) na Wiki para entender o raciocínio por trás das escolhas de ferramentas e arquitetura.
+Consulte as páginas [Estratégia de Testes](https://github.com/Charelli/Portfolio-Gym-Training-API-/wiki/Estrat%C3%A9gia-de-Testes) e [Testes Exploratórios](https://github.com/Charelli/Portfolio-Gym-Training-API-/wiki/Sess%C3%A3o-Explorat%C3%B3ria:-Heur%C3%ADstica-VADER) na Wiki para entender o raciocínio por trás das escolhas de ferramentas e arquitetura.
 
 ## Observações
 
@@ -94,7 +94,7 @@ Consulte as páginas [Estratégia de Testes](../../wiki/Estrategia-de-Testes) e 
 
 ## Limitações conhecidas e próximos passos
 
-- **Banco em memória**: os dados são perdidos a cada reinício do servidor. Essa escolha foi consciente, para simplificar a execução do projeto sem depender de infraestrutura externa (ver [Decisões Técnicas](../../wiki/Decisoes-Tecnicas)).
+- **Banco em memória**: os dados são perdidos a cada reinício do servidor. Essa escolha foi consciente, para simplificar a execução do projeto sem depender de infraestrutura externa.
 - **Perfil único (aluno)**: o projeto não contempla um perfil de instrutor. Um segundo perfil, com permissões distintas, é uma evolução possível.
-- **Cobertura de automação parcial**: nem todos os cenários documentados em Gherkin estão automatizados ainda a priorização seguiu o critério de criticidade de fluxo (ver [Estratégia de Testes](../../wiki/Estrategia-de-Testes)).
-- **Bugs em aberto**: achados de sessões de teste exploratório estão documentados como [Issues](../../issues) do repositório, incluindo status de investigação e severidade.
+- **Cobertura de automação parcial**: nem todos os cenários documentados em Gherkin estão automatizados ainda a priorização seguiu o critério de criticidade de fluxo (ver [Estratégia de Testes](https://github.com/Charelli/Portfolio-Gym-Training-API-/wiki/Estrat%C3%A9gia-de-Testes)).
+- **Bugs em aberto**: achados de sessões de teste exploratório estão documentados como [Issues](https://github.com/Charelli/Portfolio-Gym-Training-API-/issues) do repositório, incluindo status de investigação e severidade.
